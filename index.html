@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hamster Clicker</title>
+  <style>
+    body {
+      background-color: #181818;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #282828;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .main-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #282828;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .header-item {
+      background-color: #383838;
+      border-radius: 5px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .header-item:first-child {
+      margin-right: 10px;
+    }
+
+    .header-item:last-child {
+      margin-left: 10px;
+    }
+
+    .header-item .icon {
+      font-size: 20px;
+      margin-right: 5px;
+    }
+
+    .coin-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .coin {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: #ffc107;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 30px;
+      margin-right: 10px;
+    }
+
+    .coin-amount {
+      font-size: 40px;
+      font-weight: bold;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background-color: #424242;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+	.progress-bar-fill {
+	  background-image: linear-gradient(to right, #ffc107, #ff9800);
+	  background-size: 100% 100%;
+	  height: 100%;
+	  width: 0%;
+	  transition: width 0.3s ease;
+	}
+
+	.hamster {
+	  width: 200px;
+	  height: 200px;
+	  border-radius: 50%;
+	  /* Удалите строку background-image */
+	}
+<-- АНИМАЦИЯ ->
+	.hamster.clicked {
+	  animation: scaleUp 0.3s ease-in-out; /* добавляем анимацию увеличения */
+	}
+
+	.hamster.small {
+	  animation: scaleDown 0.3s ease-in-out; /* добавляем анимацию уменьшения */
+	}
+
+	@keyframes scaleUp {
+	  0% {
+		transform: scale(1);
+	  }
+	  100% {
+		transform: scale(1.2);
+	  }
+	}
+
+	@keyframes scaleDown {
+	  0% {
+		transform: scale(1.2);
+	  }
+	  100% {
+		transform: scale(1);
+	  }
+	}
+	.hamster img {
+	  width: 100%;
+	  height: 100%;
+	  object-fit: cover;
+	}
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .stat {
+      display: flex;
+      align-items: center;
+    }
+
+    .stat-icon {
+      font-size: 20px;
+      margin-right: 5px;
+    }
+
+    .stat-value {
+      font-size: 18px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .button {
+      background-color: #424242;
+      border-radius: 5px;
+      padding: 10px 20px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      background-color: #525252;
+    }
+
+    .button:active {
+      background-color: #323232;
+    }
+	/* Адаптация для мобильных устройств */
+	@media (max-width: 768px) {
+	  /* Увеличиваем шрифт для лучшей читаемости */
+	  body {
+		font-size: 18px;
+	  }
+
+	  /* Уменьшаем размер контейнера */
+	  .container {
+		width: 90%;
+		margin: 20px auto;
+	  }
+
+	  /* Уменьшаем размер хомяка */
+	  .hamster {
+		width: 150px;
+		height: 150px;
+	  }
+
+	  /* Уменьшаем размер кнопок */
+	  .button {
+		padding: 10px 15px;
+		font-size: 16px;
+	  }
+
+	  /* Уменьшаем размер прогресс-бара */
+	  .progress-bar {
+		height: 8px;
+	  }
+
+	  /* Уменьшаем размер статистики */
+	  .stats {
+		font-size: 16px;
+	  }
+	}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="header-item">
+        <span><b>Earn per tap</b></span>
+		<img src="money.png" alt="Earn icon" style="width: 20px; height: 20px; margin-right: 5px;">
+        <span>+1</span>
+      </div>
+      <div class="header-item">
+        <span><b>Coins to level up</b></span>
+        <span><b>5K</b></span>
+      </div>
+      <div class="header-item">
+        <span><b>Profit per hour</b></span>
+		<img src="money.png" alt="Earn icon" style="width: 20px; height: 20px; margin-right: 5px;">
+        <span><b>0</b></span>
+      </div>
+    </div>
+
+    <div class="coin-container">
+	  <img src="money.png" alt="Earn icon" style="width: 80px; height: 80px; margin-right: 5px;">
+      <span class="coin-amount">2,000</span>
+    </div>
+
+    <div class="progress-bar">
+      <div class="progress-bar-fill"></div>
+    </div>
+
+	<div class="hamster">
+	  <img src="image2.png" alt="Hamster image">
+	</div>
+    <div class="stats">
+      <div class="stat">
+		<img src="star.png" alt="Earn icon" style="width: 25px; height: 35px; margin-right: 5px;">
+        <span class="stat-value">1000 / 1000</span>
+      </div>
+      <div class="stat">
+        <img src="racket.png" alt="Airdrop icon" style="width: 45px; height: 40px; margin-right: 5px;">
+        <span class="stat-value">Boost</span>
+      </div>
+    </div>
+
+	<div class="buttons">
+	  <div class="button">
+		<span>
+		  <img src="exc.png" alt="Exchange icon" style="width: 20px; height: 20px; margin-right: 5px;">
+		  <b>Exchange</b>
+		</span>
+	  </div>
+	  <div class="button">
+		<span>
+		  <img src="pickaxe.png" alt="Mine icon" style="width: 20px; height: 20px; margin-right: 5px;">
+		  <b>Main</b>
+		</span>
+	  </div>
+	  <div class="button">
+	    <img src="money.png" alt="Earn icon" style="width: 20px; height: 20px; margin-right: 5px;">
+		<span><b>Earn</b></span>
+	  </div>
+	  <div class="button">
+		<img src="racket.png" alt="Airdrop icon" style="width: 20px; height: 20px; margin-right: 5px;">
+		<span><b>Airdrop</b></span>
+	  </div>
+	</div>
+  </div>
+	<div class="main-container" style="display: none;">
+    <div class="header">
+      <div class="header-item">
+        <span><b>Earn per tap</b></span>
+		<img src="money.png" alt="Earn icon" style="width: 20px; height: 20px; margin-right: 5px;">
+        <span>+1</span>
+      </div>
+      <div class="header-item">
+        <span><b>Coins to level up</b></span>
+        <span><b>5K</b></span>
+      </div>
+      <div class="header-item">
+        <span><b>Profit per hour</b></span>
+		<img src="money.png" alt="Earn icon" style="width: 20px; height: 20px; margin-right: 5px;">
+        <span><b>0</b></span>
+      </div>
+    </div>
+
+    <div class="coin-container">
+	  <img src="money.png" alt="Earn icon" style="width: 80px; height: 80px; margin-right: 5px;">
+      <span class="coin-amount">2,000</span>
+    </div>
+	  <h2>Main</h2>
+	  <p>Here you can buy stocks</p>
+	  <ul>
+		<li>
+		  <img src="circus.png" alt="Circus icon" style="width: 40px; height: 40px; margin-right: 10px;">
+		  <span>Circus</span>
+		  <span>$10</span>
+		  <button class="buy-button" data-stock="circus" data-price="10">Buy</button>
+		</li>
+		<li>
+		  <img src="zoo.png" alt="Zoo icon" style="width: 40px; height: 40px; margin-right: 10px;">
+		  <span>Zoo</span>
+		  <span>$100</span>
+		  <button class="buy-button" data-stock="zoo" data-price="100">Buy</button>
+		</li>
+	  </ul>
+	  	<div class="buttons">
+		  <div class="button">
+			<span>
+			  <img src="exc.png" alt="Exchange icon" style="width: 20px; height: 20px; margin-right: 5px;">
+			  <b>Exchange</b>
+			</span>
+		  </div>
+		  <div class="button">
+			<span>
+			  <img src="pickaxe.png" alt="Mine icon" style="width: 20px; height: 20px; margin-right: 5px;">
+			  <b>Main</b>
+			</span>
+		  </div>
+		  <div class="button">
+			<img src="money.png" alt="Earn icon" style="width: 20px; height: 20px; margin-right: 5px;">
+			<span><b>Earn</b></span>
+		  </div>
+		  <div class="button">
+			<img src="racket.png" alt="Airdrop icon" style="width: 20px; height: 20px; margin-right: 5px;">
+			<span><b>Airdrop</b></span>
+		  </div>
+		</div>
+	</div>
+  <script>
+    const coinAmount = document.querySelector('.coin-amount');
+    const progressBarFill = document.querySelector('.progress-bar-fill');
+    const hamster = document.querySelector('.hamster');
+	const mainContainer = document.querySelector('.main-container');
+	const buyButtons = document.querySelectorAll('.buy-button');
+	const profitPerHour = document.querySelector('.profit-per-hour');
+
+    let coins = 2000;
+    let level = 1;
+    let levelProgress = 0;
+	let profitPerHourValue = 0;
+    coinAmount.textContent = coins;
+
+    hamster.addEventListener('click', () => {
+      coins += 50;
+      levelProgress += 100;
+      coinAmount.textContent = coins;
+      progressBarFill.style.width = `${(levelProgress / 5000) * 100}%`;
+
+      if (levelProgress >= 5000) {
+        level += 1;
+        levelProgress = 0;
+        // Update UI to reflect level up
+      }
+	hamster.classList.toggle('clicked');
+	hamster.classList.toggle('small');
+    });
+	const mainButton = document.querySelector('.button:nth-child(2)');
+	mainButton.addEventListener('click', () => {
+	  const container = document.querySelector('.container');
+	  const mainContainer = document.querySelector('.main-container');
+	  container.style.display = 'none';
+	  mainContainer.style.display = 'block';
+	});
+	buyButtons.forEach((button) => {
+	  button.addEventListener('click', () => {
+		const stock = button.dataset.stock;
+		const price = parseInt(button.dataset.price);
+		if (coins >= price) {
+		  coins -= price;
+		  coinAmount.textContent = coins;
+		  switch (stock) {
+			case 'circus':
+			  profitPerHourValue += 10;
+			  break;
+			case 'zoo':
+			  profitPerHourValue += 50;
+			  break;
+		  }
+		  profitPerHour.textContent = `Profit per hour: ${profitPerHourValue} coins`;
+		} else {
+		  alert('Not enough coins!');
+		}
+	  });
+	});
+	setInterval(() => {
+	  coins += profitPerHourValue;
+	  coinAmount.textContent = coins;
+	}, 1000);
+  </script>
+</body>
+</html>
