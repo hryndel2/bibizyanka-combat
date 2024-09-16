@@ -190,6 +190,23 @@
         .button:active {
             background-color: #323232;
         }
+<-----MAIN BUTTON->
+        .button-main {
+            background-color: #424242;
+            border-radius: 5px;
+            padding: 10px 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .button-main:hover {
+            background-color: #525252;
+        }
+
+        .button-main:active {
+            background-color: #323232;
+        }
+
 
         /* Адаптация для мобильных устройств */
         @media (max-width: 768px) {
@@ -245,7 +262,7 @@
             <div class="header-item">
                 <span><b>Profit per hour</b></span>
                 <img src="image/money.png" alt="Earn icon" style="width: 20px; height: 20px; margin-right: 5px;">
-                <span><b>0</b></span>
+                <span class="per-amount"><b>2</b>/span>
             </div>
         </div>
 
@@ -295,127 +312,83 @@
             </div>
         </div>
     </div>
-    <div class="main-container" style="display: none;">
-        <div class="header">
-            <div class="header-item">
-                <span><b>Earn per tap</b></span>
-                <img src="image/money.png" alt="Earn icon" style="width: 20px; height: 20px; margin-right: 5px;">
-                <span>+1</span>
-            </div>
-            <div class="header-item">
-                <span><b>Coins to level up</b></span>
-                <span><b>5K</b></span>
-            </div>
-            <div class="header-item">
-                <span><b>Profit per hour</b></span>
-                <img src="image/money.png" alt="Earn icon" style="width: 20px; height: 20px; margin-right: 5px;">
-                <span><b>0</b></span>
-            </div>
-        </div>
-
-        <div class="coin-container">
-            <img src="image/money.png" alt="Earn icon" style="width: 80px; height: 80px; margin-right: 5px;">
-            <span class="coin-amount">2,000</span>
-        </div>
-        <h2>Main</h2>
-        <p>Here you can buy stocks</p>
-        <ul>
-            <li>
-                <img src="image/circus.png" alt="Circus icon" style="width: 40px; height: 40px; margin-right: 10px;">
-                <span>Circus</span>
-                <span>$10</span>
-                <button class="buy-button" data-stock="circus" data-price="10">Buy</button>
-            </li>
-            <li>
-                <img src="image/zoo.png" alt="Zoo icon" style="width: 40px; height: 40px; margin-right: 10px;">
-                <span>Zoo</span>
-                <span>$100</span>
-                <button class="buy-button" data-stock="zoo" data-price="100">Buy</button>
-            </li>
-        </ul>
-        <div class="buttons">
-            <div class="button">
-                <span>
-                    <img src="image/exc.png" alt="Exchange icon" style="width: 20px; height: 20px; margin-right: 5px;">
-                    <b>Exchange</b>
-                </span>
-            </div>
-            <div class="button">
-                <span>
-                    <img src="image/pickaxe.png" alt="Mine icon" style="width: 20px; height: 20px; margin-right: 5px;">
-                    <b>Main</b>
-                </span>
-            </div>
-            <div class="button">
-                <img src="image/money.png" alt="Earn icon" style="width: 20px; height: 20px; margin-right: 5px;">
-                <span><b>Earn</b></span>
-            </div>
-            <div class="button">
-                <img src="image/racket.png" alt="Airdrop icon" style="width: 20px; height: 20px; margin-right: 5px;">
-                <span><b>Airdrop</b></span>
-            </div>
-        </div>
-    </div>
+	<script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         const coinAmount = document.querySelector('.coin-amount');
         const progressBarFill = document.querySelector('.progress-bar-fill');
         const hamster = document.querySelector('.hamster');
-        const mainContainer = document.querySelector('.main-container');
         const buyButtons = document.querySelectorAll('.buy-button');
-        const profitPerHour = document.querySelector('.profit-per-hour');
+        const profitPerHour = document.querySelector('.per-amount');
 
-        let coins = 2000;
+        let coins = 1000;
         let level = 1;
-        let levelProgress = 0;
-        let profitPerHourValue = 0;
+        let levelProgress = 100;
+        let profitPerHourValue = 1;
         coinAmount.textContent = coins;
+		profitPerHour.textContent = profitPerHourValue;
+		const buttons = document.querySelectorAll('.button');
 
-        hamster.addEventListener('click', () => {
-            coins += 50;
-            levelProgress += 100;
-            coinAmount.textContent = coins;
-            progressBarFill.style.width = `${(levelProgress / 5000) * 100}%`;
+		buttons.forEach((button, index) => {
+			button.addEventListener('click', () => {
+				switch (index) {
+					case 0:
+						window.location.href = 'index.html';
+						break;
+					case 1:
+						window.location.href = 'main.html';
+						break;
+					case 2:
+						window.location.href = 'earn.html';
+						break;
+					case 3:
+						window.location.href = 'air.html';
+						break;
+				}
+			});
+		});
+		
+		hamster.addEventListener('click', () => {
+			coins += 15;
+			levelProgress += 100;
+			coinAmount.textContent = coins.toLocaleString();
+			progressBarFill.style.width = `${(levelProgress / 5000) * 100}%`;
 
-            if (levelProgress >= 5000) {
-                level += 1;
-                levelProgress = 0;
-                // Update UI to reflect level up
-            }
-            hamster.classList.toggle('clicked');
-            hamster.classList.toggle('small');
-        });
-        const mainButton = document.querySelector('.button:nth-child(2)');
-        mainButton.addEventListener('click', () => {
-            const container = document.querySelector('.container');
-            const mainContainer = document.querySelector('.main-container');
-            container.style.display = 'none';
-            mainContainer.style.display = 'block';
-        });
-        buyButtons.forEach((button) => {
-            button.addEventListener('click', () => {
-                const stock = button.dataset.stock;
-                const price = parseInt(button.dataset.price);
-                if (coins >= price) {
-                    coins -= price;
-                    coinAmount.textContent = coins;
-                    switch (stock) {
-                        case 'circus':
-                            profitPerHourValue += 10;
-                            break;
-                        case 'zoo':
-                            profitPerHourValue += 50;
-                            break;
-                    }
-                    profitPerHour.textContent = `Profit per hour: ${profitPerHourValue} coins`;
-                } else {
-                    alert('Not enough coins!');
-                }
-            });
-        });
-        setInterval(() => {
-            coins += profitPerHourValue;
-            coinAmount.textContent = coins;
-        }, 1000);
+			if (levelProgress >= 5000) {
+				level += 1;
+				levelProgress = 0;
+				// Update UI to reflect level up
+			}
+			hamster.classList.toggle('clicked');
+			hamster.classList.toggle('small');
+		});
+
+		buyButtons.forEach((button) => {
+			button.addEventListener('click', () => {
+				const stock = button.dataset.stock;
+				const price = parseInt(button.dataset.price);
+				if (coins >= price) {
+					coins -= price;
+					coinAmount.textContent = coins.toLocaleString();
+					switch (stock) {
+						case 'circus':
+							profitPerHourValue += 10;
+							break;
+						case 'zoo':
+							profitPerHourValue += 50;
+							break;
+					}
+					profitPerHour.textContent = `Profit per hour: ${profitPerHourValue.toLocaleString()} coins`;
+				} else {
+					alert('Not enough coins!');
+				}
+			});
+		});
+
+		setInterval(() => {
+			coins += profitPerHourValue;
+			coinAmount.textContent = coins.toLocaleString();
+		}, 1);
+		
     </script>
 </body>
 </html>
