@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hamster Clicker</title>
+    <style>
+        body {
+            background-color: #181818;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #282828;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #282828;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .header-item {
+            background-color: #383838;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .header-item:first-child {
+            margin-right: 10px;
+        }
+
+        .header-item:last-child {
+            margin-left: 10px;
+        }
+
+        .header-item .icon {
+            font-size: 20px;
+            margin-right: 5px;
+        }
+
+        .coin-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .coin {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #ffc107;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            margin-right: 10px;
+        }
+
+        .coin-amount {
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #424242;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background-image: linear-gradient(to right, #ffc107, #ff9800);
+            background-size: 100% 100%;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .hamster {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            /* Удалите строку background-image */
+        }
+
+        <-- АНИМАЦИЯ ->.hamster.clicked {
+            animation: scaleUp 0.3s ease-in-out;
+            /* добавляем анимацию увеличения */
+        }
+
+        .hamster.small {
+            animation: scaleDown 0.3s ease-in-out;
+            /* добавляем анимацию уменьшения */
+        }
+
+        @keyframes scaleUp {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.2);
+            }
+        }
+
+        @keyframes scaleDown {
+            0% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .hamster img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+        }
+
+        .stat-icon {
+            font-size: 20px;
+            margin-right: 5px;
+        }
+
+        .stat-value {
+            font-size: 18px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .button {
+            background-color: #424242;
+            border-radius: 5px;
+            padding: 10px 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #525252;
+        }
+
+        .button:active {
+            background-color: #323232;
+        }
+		.button-exc{
+            background-color: #424242;
+            border-radius: 5px;
+            padding: 10px 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .button-exc:hover {
+            background-color: #525252;
+        }
+
+        .button-exc:active {
+            background-color: #323232;
+        }
+        /* Адаптация для мобильных устройств */
+        @media (max-width: 768px) {
+
+            /* Увеличиваем шрифт для лучшей читаемости */
+            body {
+                font-size: 18px;
+            }
+
+            /* Уменьшаем размер контейнера */
+            .container {
+                width: 90%;
+                margin: 20px auto;
+            }
+
+            /* Уменьшаем размер хомяка */
+            .hamster {
+                width: 150px;
+                height: 150px;
+            }
+
+            /* Уменьшаем размер кнопок */
+            .button {
+                padding: 10px 15px;
+                font-size: 16px;
+				width: 45%;
+				height: 65%;
+				margin: 10px;
+            }
+			.button-exc {
+                padding: 10px 15px;
+                font-size: 16px;
+				width: 45%;
+				height: 45%;
+				margin: 10px;
+            }
+            /* Уменьшаем размер прогресс-бара */
+            .progress-bar {
+                height: 8px;
+            }
+
+            /* Уменьшаем размер статистики */
+            .stats {
+                font-size: 16px;
+            }
+        }
+.actions-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+}
+.action-text {
+  margin-right: 10px;
+}
+
+.action-item {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  background-color: #282828;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 250px;
+  margin: 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+.action-item.zoo::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px; /* высота полоски */
+  background: repeating-linear-gradient(to right, #fff, #fff 25%, blue 25%, blue 50%, #fff 50%, #fff 75%, blue 75%, blue);
+}
+
+.action-item.circus::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px; /* высота полоски */
+  background: repeating-linear-gradient(to right, black, black 25%, orange 25%, orange 50%, black 50%, black 75%, orange 75%, orange);
+}
+.action-item.isma::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px; /* высота полоски */
+  background: repeating-linear-gradient(to right, #16101c, #16101c 25%, #eeb77e 25%, #eeb77e 50%, #16101c 50%, #16101c 75%, #eeb77e 75%, #eeb77e);
+}
+
+.action-content {
+  text-align: center;
+}
+
+.action-content h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.action-content p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.action-content button {
+  background-color: #424242;
+  border-radius: 5px;
+  padding: 10px 20px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.action-content button:hover {
+  background-color: #525252;
+}
+
+.action-content button:active {
+  background-color: #323232;
+}
+
+.action-item img {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+}
+.no-copy, .no-copy * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.no-copy img {
+  pointer-events: none;
+}
+		.earn-container {
+		  display: flex;
+		  flex-direction: column;
+		  align-items: center;
+		  padding: 20px;
+		  background-color: #282828;
+		  border-radius: 10px;
+		  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+		  width: 170px;
+		  height: 40px;
+		   margin: 20px auto;
+		}
+
+		.earn-container ul {
+		  list-style: none;
+		  padding: 0;
+		  margin: 0;
+		}
+
+		.earn-container li {
+		  display: flex;
+		  align-items: center;
+		  margin-bottom: 10px;
+		}
+
+		.earn-container li img {
+		  width: 40px;
+		  height: 40px;
+		  margin-left: 60px;
+		}
+
+		.earn-container li span {
+		  font-size: 18px;
+		  font-weight: bold;
+		}
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-item">
+                <span><b>Earn per tap</b></span>
+                <img src="image/money.png" alt="Earn icon" style="width: 20px; height: 20px; margin-right: 5px;">
+                <span>+1</span>
+            </div>
+            <div class="header-item">
+                <span><b>Coins to level up</b></span>
+                <span><b>5K</b></span>
+            </div>
+            <div class="header-item">
+                <span><b>Profit per hour</b></span>
+                <img src="image/money.png" alt="Earn icon" style="width: 20px; height: 20px; margin-right: 5px;">
+                <span><b>0</b></span>
+            </div>
+        </div>
+
+        <div class="coin-container">
+            <img src="image/money.png" alt="Earn icon" style="width: 80px; height: 80px; margin-right: 5px;">
+            <span class="coin-amount">2,000</span>
+        </div>
+		<ul>
+			<div class="action-item circus" onclick="handleActionClick(event)">
+				<span class="action-text no-copy"><b>DONATE ALERT</b><br>Exchange</span>
+				<img src="image/donate.png" alt="Binance icon" style="width: 40px; height: 40px; margin-right: 10px;">
+			</div>
+			<div class="action-item zoo" onclick="handleActionClick(event)">
+				<span class="action-text no-copy"><b>BINANCE</b><br>Exchange</span>
+				<img src="image/binance.png" alt="Binance icon" style="width: 40px; height: 40px; margin-right: 10px; right=12px; ">
+			</div>
+			<div class="action-item isma" onclick="handleActionClick(event)">
+				<span class="action-text no-copy"><b>ISMA</b><br>Exchange</span>
+				<img src="image/isma.png" alt="Binance icon" style="width: 40px; height: 40px; margin-right: 10px; right=12px;">
+			</div>
+		</ul>
+        <div class="buttons">
+            <div class="button">
+                <span>
+                    <img src="image/exc.png" alt="Exchange icon" style="width: 20px; height: 20px; margin-right: 5px;">
+                    <b>Exchange</b>
+                </span>
+            </div>
+            <div class="button">
+                <span>
+                    <img src="image/pickaxe.png" alt="Mine icon" style="width: 20px; height: 20px; margin-right: 5px;">
+                    <b>Main</b>
+                </span>
+            </div>
+            <div class="button">
+                <img src="image/money.png" alt="Earn icon" style="width: 20px; height: 20px; margin-right: 5px;">
+                <span><b>Earn</b></span>
+            </div>
+            <div class="button">
+                <img src="image/racket.png" alt="Airdrop icon" style="width: 20px; height: 20px; margin-right: 5px;">
+                <span><b>Airdrop</b></span>
+            </div>
+        </div>
+    </div>
+    <div class="main-container" style="display: none;">
+        <div class="header">
+            <div class="header-item">
+                <span><b>Earn per tap</b></span>
+                <img src="image/money.png" alt="Earn icon" style="width: 20px; height: 20px; margin-right: 5px;">
+                <span>+1</span>
+            </div>
+            <div class="header-item">
+                <span><b>Coins to level up</b></span>
+                <span><b>5K</b></span>
+            </div>
+            <div class="header-item">
+                <span><b>Profit per hour</b></span>
+                <img src="image/money.png" alt="Earn icon" style="width: 20px; height: 20px; margin-right: 5px;">
+                <span><b>0</b></span>
+            </div>
+        </div>
+
+        <div class="coin-container">
+            <img src="image/money.png" alt="Earn icon" style="width: 80px; height: 80px; margin-right: 5px;">
+            <span class="coin-amount">2,000</span>
+        </div>
+        <h2>Main</h2>
+        <p>Here you can buy stocks</p>
+        <ul>
+            <li>
+                <img src="image/circus.png" alt="Circus icon" style="width: 40px; height: 40px; margin-right: 10px;">
+                <span>Circus</span>
+                <span>$10</span>
+                <button class="buy-button" data-stock="circus" data-price="10">Buy</button>
+            </li>
+            <li>
+                <img src="image/zoo.png" alt="Zoo icon" style="width: 40px; height: 40px; margin-right: 10px;">
+                <span>Zoo</span>
+                <span>$100</span>
+                <button class="buy-button" data-stock="zoo" data-price="100">Buy</button>
+            </li>
+        </ul>
+    </div>
+	<script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        const coinAmount = document.querySelector('.coin-amount');
+        const progressBarFill = document.querySelector('.progress-bar-fill');
+        const hamster = document.querySelector('.hamster');
+        const buyButtons = document.querySelectorAll('.buy-button');
+        const profitPerHour = document.querySelector('.profit-per-hour');
+
+        let coins = 2000000000;
+        let level = 1;
+        let levelProgress = 0;
+        let profitPerHourValue = 0;
+        coinAmount.textContent = coins;
+		
+		const buttons = document.querySelectorAll('.button');
+
+		buttons.forEach((button, index) => {
+			button.addEventListener('click', () => {
+				switch (index) {
+					case 0:
+						window.location.href = 'index.html';
+						break;
+					case 1:
+						window.location.href = 'main.html';
+						break;
+					case 2:
+						window.location.href = 'earn.html';
+						break;
+					case 3:
+						window.location.href = 'air.html';
+						break;
+				}
+			});
+		});
+		
+		hamster.addEventListener('click', () => {
+			coins += 5000;
+			levelProgress += 100;
+			coinAmount.textContent = coins.toLocaleString();
+			progressBarFill.style.width = `${(levelProgress / 5000) * 100}%`;
+
+			if (levelProgress >= 5000) {
+				level += 1;
+				levelProgress = 0;
+				// система уровней
+			}
+			hamster.classList.toggle('clicked');
+			hamster.classList.toggle('small');
+		});
+
+		buyButtons.forEach((button) => {
+			button.addEventListener('click', () => {
+				const stock = button.dataset.stock;
+				const price = parseInt(button.dataset.price);
+				if (coins >= price) {
+					coins -= price;
+					coinAmount.textContent = coins.toLocaleString();
+					switch (stock) {
+						case 'circus':
+							profitPerHourValue += 10;
+							break;
+						case 'zoo':
+							profitPerHourValue += 50;
+							break;
+					}
+					profitPerHour.textContent = `Profit per hour: ${profitPerHourValue.toLocaleString()} coins`;
+				} else {
+					alert('Not enough coins!');
+				}
+			});
+		});
+
+		setInterval(() => {
+			coins += profitPerHourValue;
+			coinAmount.textContent = coins.toLocaleString();
+		}, 1000);
+		
+    </script>
+</body>
+</html>
